@@ -9,30 +9,27 @@ public class TarefaDao {
 
 	private Tarefa tarefa;
 	private ArquivoTarefaFactory aff = new ArquivoTarefaFactory();
-	
-	
+
 	public TarefaDao(Tarefa tarefa) {
 		this.tarefa = tarefa;
 		gravarTarefa();
 	}
-	
+
 	public boolean gravarTarefa() {
-		
+
 		try {
-			
+
 			BufferedWriter bw = aff.getBw();
 			bw.write(tarefa.toString());
 			bw.flush();
-			
+
 			return true;
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;
 		}
-		
-	
+
 	}
-	
-	
+
 }

@@ -9,20 +9,18 @@ public class Funcionario {
 	private String cargo;
 	private String setor;
 	private double salario;
-	
-	
+
 	public Funcionario(String nome) {
 		setNome(nome);
 		setMatricula(Utils.gerarUUID8());
 	}
-	
+
 	public Funcionario(String nome, String cargo) {
 		this.nome = nome;
 		this.cargo = cargo;
 		matricula = Utils.gerarUUID8();
 	}
-	
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -62,11 +60,11 @@ public class Funcionario {
 	public void setSalario(double salario) {
 		this.salario = salario;
 	}
-	
+
 	@Override
 	public String toString() {
-		
+
 		return matricula + "," + nome + "," + cargo + "," + setor + "," + salario + "\n";
-	} 
+	}
 
 }

@@ -6,19 +6,25 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import br.dev.joao.tarefas.dao.FuncionarioDAO;
 import br.dev.joao.tarefas.dao.TarefaDao;
 import br.dev.joao.tarefas.model.Funcionario;
+import br.dev.joao.tarefas.model.Status;
 import br.dev.joao.tarefas.model.Tarefa;
 
 public class TarefaFrame {
@@ -39,9 +45,12 @@ public class TarefaFrame {
 	private JTextField txtDataEntrega;
 	private JButton btnSalvar;
 	private JButton btnSelecionarFuncionario;
+	private JButton btnEscolherResponsavel;
 	private ButtonGroup grupo;
 	private JPanel painelEscolha;
-	private JRadioButton botaoOpcoes;
+	private JRadioButton[] botaoOpcoes;
+	private JList listaBotoes;
+	private JScrollPane scroll;
 
 	public TarefaFrame() {
 		criarTela();
@@ -112,32 +121,40 @@ public class TarefaFrame {
 		btnSalvar = new JButton();
 		btnSalvar.setText("Salvar");
 		btnSalvar.setBounds(240, 620, 250, 60);
-		
+
 		btnSelecionarFuncionario = new JButton();
 		btnSelecionarFuncionario.setText("Funcionarios");
 		btnSelecionarFuncionario.setBounds(310, 200, 120, 40);
-		
+
 		painelEscolha = new JPanel();
 		painelEscolha.setBackground(Color.lightGray);
 		painelEscolha.setVisible(false);
-		painelEscolha.setBounds(230, 240, 200, 300);
-		
-		
+		painelEscolha.setLayout(new BoxLayout(painelEscolha, BoxLayout.Y_AXIS));
+		painelEscolha.setBounds(280, 240, 150, 300);
+
+		btnEscolherResponsavel = new JButton();
+		btnEscolherResponsavel.setText("Selecionar");
+		btnEscolherResponsavel.setBounds(330, 540, 100, 30);
+		btnEscolherResponsavel.setVisible(false);
+
 		grupo = new ButtonGroup();
-		
+
 		FuncionarioDAO listaFuncionarios = new FuncionarioDAO();
-		List<Funcionario> funcionarios =  listaFuncionarios.getFuncionarios();
-		
-		int y = 250; 
+		List<Funcionario> funcionarios = listaFuncionarios.getFuncionarios();
+		botaoOpcoes = new JRadioButton[funcionarios.size()];
+
+		int i = 0;
 		for (Funcionario funcionario : funcionarios) {
-			botaoOpcoes = new JRadioButton(funcionario.getNome());
-			botaoOpcoes.setBounds(240, y, 200, 30);
-			grupo.add(botaoOpcoes);
-			painel.add(botaoOpcoes);
-			painelEscolha.add(botaoOpcoes);
-			y+=30;
+			botaoOpcoes[i] = new JRadioButton(funcionario.getNome());
+			botaoOpcoes[i].setBounds(240, 250, 200, 30);
+			grupo.add(botaoOpcoes[i]);
+			painelEscolha.add(botaoOpcoes[i]);
+			i++;
+
 		}
-		
+
+		scroll = new JScrollPane(painelEscolha);
+		scroll.setVisible(false);
 
 		btnSalvar.addActionListener(new ActionListener() {
 
@@ -146,23 +163,47 @@ public class TarefaFrame {
 
 				String nome = txtNome.getText();
 				String descricao = txtDescricao.getText();
+				String func = txtResponsavel.getText();
 				int prazo = Integer.parseInt(txtPrazo.getText());
 				String dataInicioString = txtDataInicio.getText();
-				
-				Tarefa tarefa = new Tarefa();
-				tarefa.setDataInicio(dataInicioString);
 
+				Tarefa tarefa = new Tarefa(nome, descricao, func, prazo, dataInicioString);
+				
+				LocalDate dataPrevistaEntrega = tarefa.getDataPrevistaEntrega();
+				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				String dataPrevistaString = dataPrevistaEntrega.format(formato);
+				
+				txtDataEntrega.setText(dataPrevistaString);
+			
+				tarefa.getStatus();
+				
+				txtStatus.setText(tarefa.getStatusString());
 			}
 		});
-		
-		
+
 		btnSelecionarFuncionario.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painelEscolha.setVisible(true);
-				
-				
+				btnEscolherResponsavel.setVisible(true);
+			}
+		});
+
+		btnEscolherResponsavel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int i = 0;
+				while (botaoOpcoes[i].isSelected() == false) {
+					i++;
+				}
+
+				txtResponsavel.setText(botaoOpcoes[i].getText());
+				painelEscolha.setVisible(false);
+				btnEscolherResponsavel.setVisible(false);
+
 			}
 		});
 
@@ -183,6 +224,8 @@ public class TarefaFrame {
 		painel.add(btnSalvar);
 		painel.add(btnSelecionarFuncionario);
 		painel.add(painelEscolha);
+		painel.add(btnEscolherResponsavel);
+		painel.add(scroll);
 
 		telaTarefa.setVisible(true);
 

@@ -1,5 +1,6 @@
 package br.dev.joao.tarefas;
 
+import br.dev.joao.tarefas.ui.FuncionarioListaFrame;
 import br.dev.joao.tarefas.ui.MenuPrincipalFrame;
 import br.dev.joao.tarefas.ui.TarefaFrame;
 

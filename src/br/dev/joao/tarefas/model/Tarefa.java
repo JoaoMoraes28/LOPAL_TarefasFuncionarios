@@ -11,15 +11,20 @@ public class Tarefa {
 	private LocalDate dataInicio;
 	private int prazo;
 	private LocalDate dataEntrega;
+	private String dataPrevista;
 	private Status status;
-	String statusString;
+	private String statusString;
 
-	public Tarefa(String nome, String descrição, String responsavel, int prazo, String dataIncioString) {
+	public Tarefa(String nome, String descricao, String responsavel, int prazo, String dataIncioString) {
 		setResponsavel(responsavel);
 		setNome(nome);
 		setDescricao(descricao);
 		setPrazo(prazo);
 		setDataInicio(dataIncioString);
+	}
+	
+	public Tarefa() {
+		
 	}
 
 	public String getNome() {
@@ -54,9 +59,15 @@ public class Tarefa {
 		return dataInicio;
 	}
 
-	public void setDataInicio(String dataInicioString) {
+	public void setDataInicio(String dataInicio) {
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		dataInicio = LocalDate.parse(dataInicioString, formato);
+		this.dataInicio = LocalDate.parse(dataInicio, formato);
+	
+	}
+	
+	public void setListDataInicio(String dataInicio) {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		this.dataInicio = LocalDate.parse(dataInicio, formato);
 	}
 
 	public int getPrazo() {
@@ -71,6 +82,10 @@ public class Tarefa {
 		return dataInicio.plusDays(prazo);
 	}
 
+	public void setDataPrevista(String dataPrevista) {
+		 this.dataPrevista = dataPrevista;
+	}
+	
 	public LocalDate getDataEntrega() {
 		return dataEntrega;
 	}
@@ -78,7 +93,7 @@ public class Tarefa {
 	public void setDataEntrega(LocalDate dataEntrega) {
 		this.dataEntrega = dataEntrega;
 	}
-
+	
 	public Status getStatus() {
 		LocalDate hoje = LocalDate.now();
 		
@@ -98,10 +113,16 @@ public class Tarefa {
 
 		return status;
 	}
+	
+	public void setStatus(String status) {
+		this.status = Status.valueOf(status);
+	}
 
+	
+	@Override
 	public String toString() {
 
-		return String.format("%s,%s,%s,%s", nome, descricao, responsavel, prazo);
+		return String.format("%s,%s,%s,%s,%s,%s,%s\n", nome, descricao, responsavel, prazo, dataInicio, status, getDataPrevistaEntrega());
 	}
 
 }

@@ -168,7 +168,7 @@ public class TarefaFrame {
 				String dataInicioString = txtDataInicio.getText();
 
 				Tarefa tarefa = new Tarefa(nome, descricao, func, prazo, dataInicioString);
-				
+					
 				LocalDate dataPrevistaEntrega = tarefa.getDataPrevistaEntrega();
 				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				String dataPrevistaString = dataPrevistaEntrega.format(formato);
@@ -178,6 +178,8 @@ public class TarefaFrame {
 				tarefa.getStatus();
 				
 				txtStatus.setText(tarefa.getStatusString());
+				
+				new TarefaDao(tarefa);
 			}
 		});
 

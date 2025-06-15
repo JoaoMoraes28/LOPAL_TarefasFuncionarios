@@ -51,7 +51,7 @@ public class MenuPrincipalFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// A FAZER
+				new TarefaListaFrame(telaMenu);
 
 			}
 		});

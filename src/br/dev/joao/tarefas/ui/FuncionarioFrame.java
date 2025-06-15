@@ -37,7 +37,7 @@ public class FuncionarioFrame {
 
 	private void criarTela(JDialog pai) {
 
-		JDialog telaFuncionario = new JDialog(pai, "Cadastro de Funcionários");
+		JDialog telaFuncionario = new JDialog(pai, "Cadastro de Funcionários", true);
 		telaFuncionario.setSize(500, 500);
 		telaFuncionario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		telaFuncionario.setLayout(null);

@@ -6,16 +6,13 @@ import br.dev.joao.tarefas.model.Tarefa;
 import br.dev.joao.tarefas.ui.FuncionarioListaFrame;
 import br.dev.joao.tarefas.ui.MenuPrincipalFrame;
 import br.dev.joao.tarefas.ui.TarefaFrame;
+import br.dev.joao.tarefas.ui.TarefaListaFrame;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		new TarefaFrame();
-		Tarefa tar = new Tarefa();
-		TarefaDao dao = new TarefaDao();
-		
-		System.out.println(dao.getTarefas());
+		new MenuPrincipalFrame();	
 		
 	}
 

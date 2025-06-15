@@ -3,8 +3,11 @@ package br.dev.joao.tarefas.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import br.dev.joao.tarefas.utils.Utils;
+
 public class Tarefa {
 
+	private String id;
 	private String nome;
 	private String descricao;
 	private String responsavel;
@@ -13,26 +16,30 @@ public class Tarefa {
 	private LocalDate dataEntrega;
 	private String dataPrevista;
 	private Status status;
-	private String statusString;
 
-	public Tarefa(String nome, String descricao, String responsavel, int prazo, String dataIncioString) {
+	public Tarefa() {
+
+	}
+
+	public Tarefa(String id, String nome, String descricao, String responsavel, int prazo, String dataIncioString) {
+		setId(id);
 		setResponsavel(responsavel);
 		setNome(nome);
 		setDescricao(descricao);
 		setPrazo(prazo);
 		setDataInicio(dataIncioString);
 	}
-	
-	public Tarefa() {
-		
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getNome() {
 		return nome;
-	}
-	
-	public String getStatusString() {
-		return statusString;
 	}
 
 	public void setNome(String nome) {
@@ -62,9 +69,8 @@ public class Tarefa {
 	public void setDataInicio(String dataInicio) {
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		this.dataInicio = LocalDate.parse(dataInicio, formato);
-	
 	}
-	
+
 	public void setListDataInicio(String dataInicio) {
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		this.dataInicio = LocalDate.parse(dataInicio, formato);
@@ -83,9 +89,9 @@ public class Tarefa {
 	}
 
 	public void setDataPrevista(String dataPrevista) {
-		 this.dataPrevista = dataPrevista;
+		this.dataPrevista = dataPrevista;
 	}
-	
+
 	public LocalDate getDataEntrega() {
 		return dataEntrega;
 	}
@@ -93,36 +99,35 @@ public class Tarefa {
 	public void setDataEntrega(LocalDate dataEntrega) {
 		this.dataEntrega = dataEntrega;
 	}
-	
-	public Status getStatus() {
+
+	public String getStatus() {
 		LocalDate hoje = LocalDate.now();
-		
+
 		if (hoje.isAfter(getDataPrevistaEntrega())) {
 			status = Status.EM_ATRASO;
-			statusString = "ATRASADA";
-			
+
 		} else if (hoje.isBefore(dataInicio)) {
 			status = Status.NAO_INICIADO;
-			statusString = "NÃO INICIADA";
-			
+
 		} else if (hoje.isAfter(dataInicio) || hoje.isBefore(getDataPrevistaEntrega())) {
 			status = Status.EM_ANDAMENTO;
-			statusString = "EM ANDAMENTO";
-		
+
 		}
 
-		return status;
+		String statuString = status.name();
+
+		return statuString;
 	}
-	
+
 	public void setStatus(String status) {
 		this.status = Status.valueOf(status);
 	}
 
-	
 	@Override
 	public String toString() {
 
-		return String.format("%s,%s,%s,%s,%s,%s,%s\n", nome, descricao, responsavel, prazo, dataInicio, status, getDataPrevistaEntrega());
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", id, nome, descricao, responsavel, prazo, dataInicio, status,
+				getDataPrevistaEntrega());
 	}
 
 }

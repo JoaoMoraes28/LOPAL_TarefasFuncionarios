@@ -16,20 +16,14 @@ public class TarefaDao {
 	BufferedWriter bw;
 	BufferedReader br;
 
-	public TarefaDao(Tarefa tarefa) {
+	public boolean gravarTarefa(Tarefa tarefa) {
+
 		this.tarefa = tarefa;
-		gravarTarefa();
-	}
-	
-	public TarefaDao() {
 		
-	}
-
-	public boolean gravarTarefa() {
-
 		try {
 
 			bw = aff.getBw();
+			System.out.println(tarefa.getDataInicio());
 			bw.write(tarefa.toString());
 			bw.flush();
 
@@ -55,16 +49,17 @@ public class TarefaDao {
 				linha = br.readLine();
 				String[] tarefaVetor =  linha.split(",");
 				Tarefa tarefa = new Tarefa();
-				tarefa.setNome(tarefaVetor[0]);
-				tarefa.setDescricao(tarefaVetor[1]);
-				tarefa.setResponsavel(tarefaVetor[2]);
+				tarefa.setId(tarefaVetor[0]);
+				tarefa.setNome(tarefaVetor[1]);
+				tarefa.setDescricao(tarefaVetor[2]);
+				tarefa.setResponsavel(tarefaVetor[3]);
 				
-				int prazo = Integer.parseInt(tarefaVetor[3]);
+				int prazo = Integer.parseInt(tarefaVetor[4]);
 				tarefa.setPrazo(prazo);
 				
-				tarefa.setListDataInicio(tarefaVetor[4]);
-				tarefa.setStatus(tarefaVetor[5]);
-				tarefa.setDataPrevista(tarefaVetor[6]);
+				tarefa.setListDataInicio(tarefaVetor[5]);
+				tarefa.setStatus(tarefaVetor[6]);
+				tarefa.setDataPrevista(tarefaVetor[7]);
 				
 				tarefas.add(tarefa);
 			}
@@ -72,8 +67,6 @@ public class TarefaDao {
 		} catch (Exception e) {
 			e.getMessage();
 		}
-		 
-		System.out.println(tarefas);
 		
 		return tarefas;
 		

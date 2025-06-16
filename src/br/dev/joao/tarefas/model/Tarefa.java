@@ -12,6 +12,7 @@ public class Tarefa {
 	private String descricao;
 	private String responsavel;
 	private LocalDate dataInicio;
+	private String dataInicioString;
 	private int prazo;
 	private LocalDate dataEntrega;
 	private String dataPrevista;
@@ -37,7 +38,7 @@ public class Tarefa {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -62,18 +63,22 @@ public class Tarefa {
 		return responsavel;
 	}
 
+	public String getDataInicioString() {
+		return dataInicioString;
+	}
+	
 	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
 
 	public void setDataInicio(String dataInicio) {
+		dataInicioString = dataInicio;
 		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		this.dataInicio = LocalDate.parse(dataInicio, formato);
 	}
 
 	public void setListDataInicio(String dataInicio) {
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.dataInicio = LocalDate.parse(dataInicio, formato);
+		dataInicioString = dataInicio;
 	}
 
 	public int getPrazo() {
@@ -86,6 +91,13 @@ public class Tarefa {
 
 	public LocalDate getDataPrevistaEntrega() {
 		return dataInicio.plusDays(prazo);
+	}
+	
+	public String getDataPrevistaString() {
+		dataInicio = dataInicio.plusDays(prazo);
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		dataPrevista = dataInicio.format(formato);
+		return dataPrevista;
 	}
 
 	public void setDataPrevista(String dataPrevista) {
@@ -126,7 +138,7 @@ public class Tarefa {
 	@Override
 	public String toString() {
 
-		return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", id, nome, descricao, responsavel, prazo, dataInicio, status,
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", id, nome, descricao, responsavel, prazo, dataInicioString, status,
 				getDataPrevistaEntrega());
 	}
 

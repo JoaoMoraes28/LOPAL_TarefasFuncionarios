@@ -118,6 +118,7 @@ public class TarefaFrame {
 		status.setBounds(10, 410, 120, 30);
 
 		txtStatus = new JTextField();
+		txtStatus.setEditable(false);
 		txtStatus.setBounds(10, 440, 130, 40);
 
 		prazo = new JLabel();
@@ -132,6 +133,7 @@ public class TarefaFrame {
 		dataEntrega.setBounds(10, 570, 120, 30);
 
 		txtDataEntrega = new JTextField();
+		txtDataEntrega.setEditable(false);
 		txtDataEntrega.setBounds(10, 600, 200, 40);
 
 		btnSalvar = new JButton();

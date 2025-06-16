@@ -1,5 +1,7 @@
 package br.dev.joao.tarefas;
 
+import javax.swing.JFrame;
+
 import br.dev.joao.tarefas.dao.FuncionarioDAO;
 import br.dev.joao.tarefas.dao.TarefaDao;
 import br.dev.joao.tarefas.model.Tarefa;
@@ -12,7 +14,10 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		new MenuPrincipalFrame();	
+		
+		JFrame tela = new JFrame();
+		new TarefaListaFrame(tela);
+//		new MenuPrincipalFrame();	
 		
 	}
 

@@ -2,6 +2,8 @@ package br.dev.joao.tarefas.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +25,6 @@ public class TarefaDao {
 		try {
 
 			bw = aff.getBw();
-			System.out.println(tarefa.getDataInicio());
 			bw.write(tarefa.toString());
 			bw.flush();
 
@@ -56,6 +57,9 @@ public class TarefaDao {
 				
 				int prazo = Integer.parseInt(tarefaVetor[4]);
 				tarefa.setPrazo(prazo);
+				
+			
+				tarefa.setDataInicio(tarefaVetor[5]);
 				
 				tarefa.setListDataInicio(tarefaVetor[5]);
 				tarefa.setStatus(tarefaVetor[6]);

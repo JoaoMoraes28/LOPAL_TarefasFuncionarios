@@ -15,9 +15,9 @@ public class Main {
 	public static void main(String[] args) {
 
 		
-		JFrame tela = new JFrame();
-		new TarefaListaFrame(tela);
-//		new MenuPrincipalFrame();	
+//		JFrame tela = new JFrame();
+//		new TarefaListaFrame(tela);
+		new MenuPrincipalFrame();	
 		
 	}
 

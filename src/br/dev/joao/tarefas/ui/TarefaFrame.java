@@ -65,7 +65,7 @@ public class TarefaFrame {
 
 	public void criarTela(JDialog pai) {
 
-		JDialog telaTarefa = new JDialog(pai, "Cadastro de Tarefas" ,true);
+		JDialog telaTarefa = new JDialog(pai, "Cadastro de Tarefas", true);
 		telaTarefa.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		telaTarefa.setSize(500, 850);
 		telaTarefa.setResizable(false);
@@ -78,12 +78,12 @@ public class TarefaFrame {
 		id = new JLabel();
 		id.setText("ID");
 		id.setBounds(10, 10, 400, 30);
-		
+
 		txtId = new JTextField();
 		txtId.setEditable(false);
 		txtId.setText(Utils.gerarUUID8());
 		txtId.setBounds(10, 40, 400, 40);
-		
+
 		nome = new JLabel();
 		nome.setText("Nome");
 		nome.setBounds(10, 90, 50, 30);
@@ -139,7 +139,7 @@ public class TarefaFrame {
 		btnSalvar = new JButton();
 		btnSalvar.setText("Salvar");
 		btnSalvar.setBounds(10, 700, 250, 60);
-		
+
 		btnSair = new JButton();
 		btnSair.setText("Sair");
 		btnSair.setBounds(270, 700, 150, 60);
@@ -183,35 +183,49 @@ public class TarefaFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				String id = txtId.getText();
-				String nome = txtNome.getText();
-				String descricao = txtDescricao.getText();
-				String func = txtResponsavel.getText();
-				int prazo = Integer.parseInt(txtPrazo.getText());
-				String dataInicioString = txtDataInicio.getText();
+				try {
 
-				Tarefa tarefa = new Tarefa(id, nome, descricao, func, prazo, dataInicioString);
-					
-				LocalDate dataPrevistaEntrega = tarefa.getDataPrevistaEntrega();
-				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				String dataPrevistaString = dataPrevistaEntrega.format(formato);
-				
-				txtDataEntrega.setText(dataPrevistaString);
-			
-				tarefa.getStatus();
-				
-				txtStatus.setText(tarefa.getStatus());
-				
-				TarefaDao dao = new TarefaDao();
-				boolean confirmarcao = dao.gravarTarefa(tarefa);
-				
-				if (confirmarcao) {
-					JOptionPane.showMessageDialog(telaTarefa, "Tarefa gravada com sucesso");
-					limparFormulario();
-					
-				} else {
-					JOptionPane.showMessageDialog(telaTarefa, "Ocorreu um erro na gravação da Tarefa\n Entre em contato com o suporte");
+					String id = txtId.getText();
+					String nome = txtNome.getText();
+					String descricao = txtDescricao.getText();
+					String func = txtResponsavel.getText();
+					int prazo = Integer.parseInt(txtPrazo.getText());
+					String dataInicioString = txtDataInicio.getText();
+
+					id = id.replace(",", "");
+					nome = nome.replace(",", "");
+					descricao = descricao.replace(",", "");
+					func = func.replace(",", "");
+					dataInicioString = dataInicioString.replace(",", "");
+
+					Tarefa tarefa = new Tarefa(id, nome, descricao, func, prazo, dataInicioString);
+
+					LocalDate dataPrevistaEntrega = tarefa.getDataPrevistaEntrega();
+					DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					String dataPrevistaString = dataPrevistaEntrega.format(formato);
+
+					txtDataEntrega.setText(dataPrevistaString);
+
+					tarefa.getStatus();
+
+					txtStatus.setText(tarefa.getStatus());
+
+					TarefaDao dao = new TarefaDao();
+					boolean confirmarcao = dao.gravarTarefa(tarefa);
+
+					if (confirmarcao) {
+						JOptionPane.showMessageDialog(telaTarefa, "Tarefa gravada com sucesso");
+						limparFormulario();
+
+					} else {
+						JOptionPane.showMessageDialog(telaTarefa,
+								"Ocorreu um erro na gravação da Tarefa\n Entre em contato com o suporte");
+					}
+
+				} catch (Exception e2) {
+					System.out.println("error");
 				}
+
 			}
 		});
 
@@ -229,24 +243,30 @@ public class TarefaFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int i = 0;
-				while (botaoOpcoes[i].isSelected() == false) {
-					i++;
-				}
+				try {
+					int i = 0;
+					while (botaoOpcoes[i].isSelected() == false) {
+						i++;
+					}
 
-				txtResponsavel.setText(botaoOpcoes[i].getText());
-				painelEscolha.setVisible(false);
-				btnEscolherResponsavel.setVisible(false);
+					txtResponsavel.setText(botaoOpcoes[i].getText());
+					painelEscolha.setVisible(false);
+					btnEscolherResponsavel.setVisible(false);
+
+				} catch (Exception e2) {
+					System.out.println("ERROR");
+				}
 
 			}
 		});
-		
+
 		btnSair.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int resposta = JOptionPane.showConfirmDialog(telaTarefa, "Atenção", "Sair do Sistema?", JOptionPane.YES_NO_OPTION);
-				
+				int resposta = JOptionPane.showConfirmDialog(telaTarefa, "Atenção", "Sair do Sistema?",
+						JOptionPane.YES_NO_OPTION);
+
 				if (resposta == 0) {
 					telaTarefa.dispose();
 				}
@@ -279,9 +299,9 @@ public class TarefaFrame {
 		telaTarefa.setVisible(true);
 
 	}
-	
+
 	public void limparFormulario() {
-		
+
 		txtId.setText(Utils.gerarUUID8());
 		txtNome.setText(null);
 		txtDescricao.setText(null);

@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.PrivateKey;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,10 +34,14 @@ public class TarefaListaFrame {
 	private JLabel labelTitulo;
 	private JButton btnSair;
 	private JButton btnNovo;
+	private JButton btnEntregar;
 	private JScrollPane scroll;
 	private JTable tabelaTarefas;
 	private DefaultTableModel model;
-	private String[] colunas = { "ID", "TAREFA", "DESCRIÇÃO", "RESPONSÁVEL", "DATA DE INÍCIO", "STATUS", "ENTREGUE" };
+	private JCheckBox[] vetorBox = null;
+	private Object[][] dados;
+	private String[] colunas = { "ID", "TAREFA", "DESCRIÇÃO", "RESPONSÁVEL", "DATA DE INÍCIO", "STATUS",
+			"DATA PREVISTA DE ENTREGA", "DATA DE ENTREGA" };
 
 	public TarefaListaFrame(JFrame pai) {
 		criarTela(pai);
@@ -67,6 +73,10 @@ public class TarefaListaFrame {
 		btnNovo.setText("Cadastrar nova tarefa");
 		btnNovo.setBounds(10, 600, 250, 50);
 
+		btnEntregar = new JButton();
+		btnEntregar.setText("Entregar tarefas");
+		btnEntregar.setBounds(460, 600, 250, 50);
+
 		btnSair = new JButton();
 		btnSair.setText("Sair");
 		btnSair.setBounds(840, 600, 250, 50);
@@ -97,10 +107,36 @@ public class TarefaListaFrame {
 			}
 		});
 
+		btnEntregar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int i = 0;
+				while (i < vetorBox.length) {
+
+					if (vetorBox[i].isSelected() == true) {
+						vetorBox[i].setVisible(false);
+						vetorBox[i].setBounds(0, 0, 0, 0);
+						DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						LocalDate hoje = LocalDate.now();
+						String hojeString = hoje.format(formato);
+						model.setValueAt(hojeString, i, 7);
+						model.setValueAt("Entregue", i, 5);
+
+					}
+
+					i++;
+				}
+			
+			}
+		});
+
 		painel.add(labelTitulo);
 		painel.add(scroll);
 		painel.add(btnSair);
 		painel.add(btnNovo);
+		painel.add(btnEntregar);
 
 		telaListaTarefas.setVisible(true);
 	}
@@ -111,13 +147,11 @@ public class TarefaListaFrame {
 		TarefaDao dao = new TarefaDao();
 		tarefas = dao.getTarefas();
 
-		Object[][] dados = new Object[tarefas.size()][8];
-
-//		"ID", "TAREFA" , "Descricao" , "RESPONSÁVEL", "DATA DE INÍCIO", "DATA DE ENTREGA", "STATUS", "ENTREGUE"
-		JCheckBox[] vetorBox = new JCheckBox[tarefas.size()];
+		dados = new Object[tarefas.size()][8];
+		vetorBox = new JCheckBox[tarefas.size()];
 
 		int i = 0;
-		int b = 88;
+		int posicao = 88;
 		for (Tarefa t : tarefas) {
 
 			dados[i][0] = t.getId();
@@ -127,18 +161,18 @@ public class TarefaListaFrame {
 			dados[i][4] = t.getDataInicioString();
 			dados[i][5] = t.getStatus();
 			dados[i][6] = t.getDataPrevistaString();
+			dados[i][7] = "";
 
 			vetorBox[i] = new JCheckBox();
-			vetorBox[i].setLayout(null);
-			vetorBox[i].setBounds(955, b, 20, 20);
-			b += 16;
+
+			vetorBox[i].setBounds(955, posicao, 20, 20);
+			posicao += 16;
 
 			painel.add(vetorBox[i]);
-			painel.setComponentZOrder(vetorBox[0], 0);
 			i++;
 		}
-		model.setDataVector(dados, colunas);
 
+		model.setDataVector(dados, colunas);
 		return dados;
 	}
 

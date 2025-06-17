@@ -3,8 +3,6 @@ package br.dev.joao.tarefas.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import br.dev.joao.tarefas.utils.Utils;
-
 public class Tarefa {
 
 	private String id;
@@ -16,6 +14,7 @@ public class Tarefa {
 	private int prazo;
 	private LocalDate dataEntrega;
 	private String dataPrevista;
+	DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private Status status;
 
 	public Tarefa() {
@@ -73,7 +72,7 @@ public class Tarefa {
 
 	public void setDataInicio(String dataInicio) {
 		dataInicioString = dataInicio;
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
 		this.dataInicio = LocalDate.parse(dataInicio, formato);
 	}
 
@@ -95,7 +94,6 @@ public class Tarefa {
 	
 	public String getDataPrevistaString() {
 		dataInicio = dataInicio.plusDays(prazo);
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		dataPrevista = dataInicio.format(formato);
 		return dataPrevista;
 	}

@@ -5,29 +5,27 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.PrivateKey;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 
 import br.dev.joao.tarefas.dao.TarefaDao;
+import br.dev.joao.tarefas.factory.ArquivoTarefaFactory;
 import br.dev.joao.tarefas.model.Tarefa;
-import br.dev.joao.tarefas.utils.Utils;
 
 public class TarefaListaFrame {
 
@@ -112,23 +110,57 @@ public class TarefaListaFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				ArquivoTarefaFactory factory = new ArquivoTarefaFactory();
+				List<String> id = new ArrayList<String>();
+				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate hoje = LocalDate.now();
+				String hojeString = hoje.format(formato);
+
 				int i = 0;
 				while (i < vetorBox.length) {
 
 					if (vetorBox[i].isSelected() == true) {
 						vetorBox[i].setVisible(false);
 						vetorBox[i].setBounds(0, 0, 0, 0);
-						DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						LocalDate hoje = LocalDate.now();
-						String hojeString = hoje.format(formato);
 						model.setValueAt(hojeString, i, 7);
 						model.setValueAt("Entregue", i, 5);
+						id.add(dados[i][0].toString());
 
 					}
 
 					i++;
 				}
-			
+
+				try {
+
+					BufferedReader br = factory.getBr();
+					BufferedWriter bw = factory.getBw();
+
+					int linhas = 0;
+					while (br.readLine() != null) {
+						linhas++;
+
+					}
+
+					i = 0;
+					int vetor = 0;
+					String linha = "";
+
+					while (i < dados.length) {
+
+						if (linha != null && dados[i][0].equals(id.get(vetor))) {
+							bw.append(dados[i][0] + "," + hojeString + "\n");
+							bw.flush();
+							vetor++;
+						}
+
+						i++;
+					}
+
+				} catch (IOException e1) {
+
+				}
+
 			}
 		});
 

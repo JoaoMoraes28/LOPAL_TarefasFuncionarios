@@ -1,6 +1,5 @@
 package br.dev.joao.tarefas.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -11,12 +10,9 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,7 +22,6 @@ import javax.swing.JTextField;
 import br.dev.joao.tarefas.dao.FuncionarioDAO;
 import br.dev.joao.tarefas.dao.TarefaDao;
 import br.dev.joao.tarefas.model.Funcionario;
-import br.dev.joao.tarefas.model.Status;
 import br.dev.joao.tarefas.model.Tarefa;
 import br.dev.joao.tarefas.utils.Utils;
 
@@ -55,7 +50,6 @@ public class TarefaFrame {
 	private ButtonGroup grupo;
 	private JPanel painelEscolha;
 	private JRadioButton[] botaoOpcoes;
-	private JList listaBotoes;
 	private JScrollPane scroll;
 
 	public TarefaFrame(JDialog pai) {

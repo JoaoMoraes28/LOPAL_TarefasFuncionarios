@@ -80,8 +80,6 @@ public class FuncionarioFrame {
 
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setBounds(10, 380, 200, 40);
-//		btnSalvar.setOpaque(true);
-//		btnSalvar.setBackground(Color.GREEN);
 
 		btnSair = new JButton("Sair");
 		btnSair.setBounds(220, 380, 120, 40);

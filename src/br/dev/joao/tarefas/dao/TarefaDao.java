@@ -18,7 +18,7 @@ public class TarefaDao {
 	public boolean gravarTarefa(Tarefa tarefa) {
 
 		this.tarefa = tarefa;
-		
+
 		try {
 
 			bw = aff.getBw();
@@ -33,44 +33,47 @@ public class TarefaDao {
 		}
 
 	}
-	
+
 	public List<Tarefa> getTarefas() {
-		
+
 		List<Tarefa> tarefas = new ArrayList<Tarefa>();
-		
+
 		try {
-			
+
 			String linha = "";
 			br = aff.getBr();
-			
+
 			while (linha != null) {
 				linha = br.readLine();
-				String[] tarefaVetor =  linha.split(",");
+				String[] tarefaVetor = linha.split(",");
 				Tarefa tarefa = new Tarefa();
 				tarefa.setId(tarefaVetor[0]);
 				tarefa.setNome(tarefaVetor[1]);
 				tarefa.setDescricao(tarefaVetor[2]);
 				tarefa.setResponsavel(tarefaVetor[3]);
-				
+
 				int prazo = Integer.parseInt(tarefaVetor[4]);
 				tarefa.setPrazo(prazo);
-				
-			
+
 				tarefa.setDataInicio(tarefaVetor[5]);
-				
+
 				tarefa.setListDataInicio(tarefaVetor[5]);
 				tarefa.setStatus(tarefaVetor[6]);
 				tarefa.setDataPrevista(tarefaVetor[7]);
-				
+
+				if (tarefaVetor.length == 9) {
+					tarefa.setDataEntrega(tarefaVetor[8]);
+				}
+
 				tarefas.add(tarefa);
 			}
-			
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
-		
+
 		return tarefas;
-		
+
 	}
 
 }

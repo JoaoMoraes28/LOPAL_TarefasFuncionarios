@@ -21,6 +21,15 @@ public class ArquivoTarefaFactory {
 		
 		return bw;
 	}
+	
+	public BufferedWriter getBwFalse() throws IOException {
+		
+		fw = new FileWriter(caminho , false);
+		bw = new BufferedWriter(fw);
+		
+		return bw;
+		
+	}
 
 	public BufferedReader getBr() throws IOException {
 		

@@ -36,8 +36,9 @@ public class TarefaListaFrame {
 	private JScrollPane scroll;
 	private JTable tabelaTarefas;
 	private DefaultTableModel model;
-	private JCheckBox[] vetorBox = null;
+	private List<JCheckBox> vetorBox = new ArrayList<JCheckBox>();
 	private Object[][] dados;
+	private List<Integer> contatorEntrega = new ArrayList<Integer>();
 	private String[] colunas = { "ID", "TAREFA", "DESCRIÇÃO", "RESPONSÁVEL", "DATA DE INÍCIO", "STATUS",
 			"DATA PREVISTA DE ENTREGA", "DATA DE ENTREGA" };
 
@@ -117,14 +118,16 @@ public class TarefaListaFrame {
 				String hojeString = hoje.format(formato);
 
 				int i = 0;
-				while (i < vetorBox.length) {
+				int b = 0;
+				while (i < vetorBox.size()) {
 
-					if (vetorBox[i].isSelected() == true) {
-						vetorBox[i].setVisible(false);
-						vetorBox[i].setBounds(0, 0, 0, 0);
-						model.setValueAt(hojeString, i, 7);
-						model.setValueAt("Entregue", i, 5);
-						id.add(dados[i][0].toString());
+					if (vetorBox.get(i).isSelected() == true) {
+						vetorBox.get(i).setVisible(false);
+						vetorBox.get(i).setBounds(0, 0, 0, 0);
+						model.setValueAt(hojeString, contatorEntrega.get(b), 7);
+						model.setValueAt("Entregue", contatorEntrega.get(b), 5);
+						id.add(dados[contatorEntrega.get(b)][0].toString());
+						b++;
 
 					}
 
@@ -147,16 +150,34 @@ public class TarefaListaFrame {
 					BufferedWriter bw = factory.getBw();
 
 					i = 0;
+					b = 0;
+					List<String> arquivo = new ArrayList<String>();
 					String linha = br.readLine();
 
-					while (i < dados.length) {
+					while (linha != null) {
 
-						if (linha != null && dados[i][0].equals(id2[i])) {
-							String[] dadosEntrega = linha.split(",");
-							System.out.println(linha);
-
+						if (i < id2.length && dados[b][0].equals(id2[i])) {
+							linha = linha.replace("NAO_INICIADO", "CONCLUÍDO");
+							linha = linha.replace("EM_ANDAMENTO", "CONCLUÍDO");
+							linha = linha.replace("EM_ATRASO", "CONCLUÍDO");
+							linha = linha + "," + hojeString;
+							i++;
 						}
 
+						b++;
+
+						arquivo.add(linha);
+						linha = br.readLine();
+
+					}
+
+					BufferedWriter bwF = factory.getBwFalse();
+
+					i = 0;
+
+					while (i < arquivo.size()) {
+						bwF.write(arquivo.get(i) + "\n");
+						bwF.flush();
 						i++;
 					}
 
@@ -183,9 +204,9 @@ public class TarefaListaFrame {
 		tarefas = dao.getTarefas();
 
 		dados = new Object[tarefas.size()][8];
-		vetorBox = new JCheckBox[tarefas.size()];
 
 		int i = 0;
+		int iBox = 0;
 		int posicao = 88;
 		for (Tarefa t : tarefas) {
 
@@ -194,16 +215,23 @@ public class TarefaListaFrame {
 			dados[i][2] = t.getDescricao();
 			dados[i][3] = t.getResponsavel();
 			dados[i][4] = t.getDataInicioString();
-			dados[i][5] = t.getStatus();
+			dados[i][5] = t.getStatuString();
 			dados[i][6] = t.getDataPrevistaString();
-			dados[i][7] = "";
+			dados[i][7] = t.getDataEntrega();
 
-			vetorBox[i] = new JCheckBox();
+			if (dados[i][7] == null) {
 
-			vetorBox[i].setBounds(955, posicao, 20, 20);
-			posicao += 16;
+				vetorBox.add(new JCheckBox());
 
-			painel.add(vetorBox[i]);
+				vetorBox.get(iBox).setBounds(955, posicao, 20, 20);
+				posicao += 16;
+
+				painel.add(vetorBox.get(iBox));
+				contatorEntrega.add(i);
+				iBox++;
+			}
+
+			System.out.println(contatorEntrega);
 			i++;
 		}
 

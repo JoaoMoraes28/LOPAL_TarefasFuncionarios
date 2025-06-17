@@ -12,10 +12,11 @@ public class Tarefa {
 	private LocalDate dataInicio;
 	private String dataInicioString;
 	private int prazo;
-	private LocalDate dataEntrega;
+	private String dataEntrega;
 	private String dataPrevista;
 	DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private Status status;
+	private String statuString;
 
 	public Tarefa() {
 
@@ -101,11 +102,11 @@ public class Tarefa {
 		this.dataPrevista = dataPrevista;
 	}
 
-	public LocalDate getDataEntrega() {
+	public String getDataEntrega() {
 		return dataEntrega;
 	}
 
-	public void setDataEntrega(LocalDate dataEntrega) {
+	public void setDataEntrega(String dataEntrega) {
 		this.dataEntrega = dataEntrega;
 	}
 
@@ -123,15 +124,19 @@ public class Tarefa {
 
 		}
 
-		String statuString = status.name();
+		statuString = status.name();
 
 		return statuString;
 	}
 
 	public void setStatus(String status) {
-		this.status = Status.valueOf(status);
+		this.statuString = status;
 	}
 
+	public String getStatuString() {
+		return statuString;
+	}
+	
 	@Override
 	public String toString() {
 

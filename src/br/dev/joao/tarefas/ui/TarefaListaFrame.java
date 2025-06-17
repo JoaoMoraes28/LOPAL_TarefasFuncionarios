@@ -131,27 +131,30 @@ public class TarefaListaFrame {
 					i++;
 				}
 
+				String[] id2 = new String[id.size()];
+
+				i = 0;
+				while (i < id.size()) {
+					id2[i] = id.get(i);
+					i++;
+				}
+
+				i = 0;
+
 				try {
 
 					BufferedReader br = factory.getBr();
 					BufferedWriter bw = factory.getBw();
 
-					int linhas = 0;
-					while (br.readLine() != null) {
-						linhas++;
-
-					}
-
 					i = 0;
-					int vetor = 0;
-					String linha = "";
+					String linha = br.readLine();
 
 					while (i < dados.length) {
 
-						if (linha != null && dados[i][0].equals(id.get(vetor))) {
-							bw.append(dados[i][0] + "," + hojeString + "\n");
-							bw.flush();
-							vetor++;
+						if (linha != null && dados[i][0].equals(id2[i])) {
+							String[] dadosEntrega = linha.split(",");
+							System.out.println(linha);
+
 						}
 
 						i++;

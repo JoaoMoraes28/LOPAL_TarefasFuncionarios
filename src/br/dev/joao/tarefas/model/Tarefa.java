@@ -37,7 +37,7 @@ public class Tarefa {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -65,14 +65,13 @@ public class Tarefa {
 	public String getDataInicioString() {
 		return dataInicioString;
 	}
-	
+
 	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
 
 	public void setDataInicio(String dataInicio) {
 		dataInicioString = dataInicio;
-		
 		this.dataInicio = LocalDate.parse(dataInicio, formato);
 	}
 
@@ -91,7 +90,7 @@ public class Tarefa {
 	public LocalDate getDataPrevistaEntrega() {
 		return dataInicio.plusDays(prazo);
 	}
-	
+
 	public String getDataPrevistaString() {
 		dataInicio = dataInicio.plusDays(prazo);
 		dataPrevista = dataInicio.format(formato);
@@ -136,8 +135,8 @@ public class Tarefa {
 	@Override
 	public String toString() {
 
-		return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", id, nome, descricao, responsavel, prazo, dataInicioString, status,
-				getDataPrevistaEntrega());
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", id, nome, descricao, responsavel, prazo, dataInicioString,
+				status, getDataPrevistaEntrega());
 	}
 
 }

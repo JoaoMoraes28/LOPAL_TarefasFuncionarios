@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import br.dev.joao.tarefas.dao.TarefaDao;
@@ -30,6 +31,7 @@ import br.dev.joao.tarefas.model.Tarefa;
 public class TarefaListaFrame {
 
 	private JLabel labelTitulo;
+	private JLabel labelEntrega;
 	private JButton btnSair;
 	private JButton btnNovo;
 	private JButton btnEntregar;
@@ -40,7 +42,7 @@ public class TarefaListaFrame {
 	private Object[][] dados;
 	private List<Integer> contatorEntrega = new ArrayList<Integer>();
 	private String[] colunas = { "ID", "TAREFA", "DESCRIÇÃO", "RESPONSÁVEL", "DATA DE INÍCIO", "STATUS",
-			"DATA PREVISTA DE ENTREGA", "DATA DE ENTREGA" };
+			"DATA PREVISTA", "DATA DE ENTREGA" };
 
 	public TarefaListaFrame(JFrame pai) {
 		criarTela(pai);
@@ -51,7 +53,7 @@ public class TarefaListaFrame {
 		telaListaTarefas.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		telaListaTarefas.setLayout(null);
 		telaListaTarefas.setResizable(false);
-		telaListaTarefas.setSize(1100, 700);
+		telaListaTarefas.setSize(1150, 700);
 		telaListaTarefas.setLocationRelativeTo(null);
 
 		Container painel = telaListaTarefas.getContentPane();
@@ -62,11 +64,17 @@ public class TarefaListaFrame {
 		labelTitulo.setForeground(Color.red);
 		labelTitulo.setBounds(10, 10, 500, 40);
 
+		labelEntrega = new JLabel();
+		labelEntrega.setText("ENTREGA");
+		labelEntrega.setBounds(1055, 66, 70, 30);
+		labelEntrega.setForeground(Color.darkGray);
+		labelEntrega.setHorizontalAlignment(JTextField.CENTER);
+		
 		model = new DefaultTableModel();
 		tabelaTarefas = new JTable(model);
 
 		scroll = new JScrollPane(tabelaTarefas);
-		scroll.setBounds(10, 70, 945, 500);
+		scroll.setBounds(10, 70, 1045, 500);
 
 		btnNovo = new JButton();
 		btnNovo.setText("Cadastrar nova tarefa");
@@ -74,7 +82,7 @@ public class TarefaListaFrame {
 
 		btnEntregar = new JButton();
 		btnEntregar.setText("Entregar tarefas");
-		btnEntregar.setBounds(460, 600, 250, 50);
+		btnEntregar.setBounds(280, 600, 250, 50);
 
 		btnSair = new JButton();
 		btnSair.setText("Sair");
@@ -112,33 +120,35 @@ public class TarefaListaFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				ArquivoTarefaFactory factory = new ArquivoTarefaFactory();
-				List<String> id = new ArrayList<String>();
+				List<String> idList = new ArrayList<String>();
 				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				LocalDate hoje = LocalDate.now();
 				String hojeString = hoje.format(formato);
 
+				// Vetor de chekBox para marca de entrega de tarefa
 				int i = 0;
-				int b = 0;
+				int iContatator = 0;
 				while (i < vetorBox.size()) {
 
 					if (vetorBox.get(i).isSelected() == true) {
 						vetorBox.get(i).setVisible(false);
 						vetorBox.get(i).setBounds(0, 0, 0, 0);
-						model.setValueAt(hojeString, contatorEntrega.get(b), 7);
-						model.setValueAt("Entregue", contatorEntrega.get(b), 5);
-						id.add(dados[contatorEntrega.get(b)][0].toString());
-						b++;
+						model.setValueAt(hojeString, contatorEntrega.get(iContatator), 7);
+						model.setValueAt("Entregue", contatorEntrega.get(iContatator), 5);
+						idList.add(dados[contatorEntrega.get(iContatator)][0].toString());
+						iContatator++;
 
 					}
 
 					i++;
 				}
 
-				String[] id2 = new String[id.size()];
+				// Verificação de arquivos para a edição e registro de entrega
+				String[] idVetor = new String[idList.size()];
 
 				i = 0;
-				while (i < id.size()) {
-					id2[i] = id.get(i);
+				while (i < idList.size()) {
+					idVetor[i] = idList.get(i);
 					i++;
 				}
 
@@ -150,13 +160,13 @@ public class TarefaListaFrame {
 					BufferedWriter bw = factory.getBw();
 
 					i = 0;
-					b = 0;
+					iContatator = 0;
 					List<String> arquivo = new ArrayList<String>();
 					String linha = br.readLine();
 
 					while (linha != null) {
 
-						if (i < id2.length && dados[b][0].equals(id2[i])) {
+						if (i < idVetor.length && dados[iContatator][0].equals(idVetor[i])) {
 							linha = linha.replace("NAO_INICIADO", "CONCLUÍDO");
 							linha = linha.replace("EM_ANDAMENTO", "CONCLUÍDO");
 							linha = linha.replace("EM_ATRASO", "CONCLUÍDO");
@@ -164,7 +174,7 @@ public class TarefaListaFrame {
 							i++;
 						}
 
-						b++;
+						iContatator++;
 
 						arquivo.add(linha);
 						linha = br.readLine();
@@ -193,6 +203,7 @@ public class TarefaListaFrame {
 		painel.add(btnSair);
 		painel.add(btnNovo);
 		painel.add(btnEntregar);
+		painel.add(labelEntrega);
 
 		telaListaTarefas.setVisible(true);
 	}
@@ -207,7 +218,6 @@ public class TarefaListaFrame {
 
 		int i = 0;
 		int iBox = 0;
-		int posicao = 88;
 		for (Tarefa t : tarefas) {
 
 			dados[i][0] = t.getId();
@@ -219,19 +229,20 @@ public class TarefaListaFrame {
 			dados[i][6] = t.getDataPrevistaString();
 			dados[i][7] = t.getDataEntrega();
 
+			// Caso ainda não tenha registro de data de entrega será feito o checkBox
 			if (dados[i][7] == null) {
 
 				vetorBox.add(new JCheckBox());
 
-				vetorBox.get(iBox).setBounds(955, posicao, 20, 20);
-				posicao += 16;
+				int posicao = 88;
+				posicao = 88 + 16 * i;
+				vetorBox.get(iBox).setBounds(1055, posicao, 20, 20);
 
 				painel.add(vetorBox.get(iBox));
 				contatorEntrega.add(i);
 				iBox++;
 			}
 
-			System.out.println(contatorEntrega);
 			i++;
 		}
 

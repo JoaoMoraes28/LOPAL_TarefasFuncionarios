@@ -26,9 +26,9 @@ public class FuncionarioListaFrame {
 	private JButton btnNovo;
 	private JButton btnSair;
 
-	private DefaultTableModel model; // Dados da tabela
-	private JTable tabelaFuncionarios; // Tabela visualmente
-	private JScrollPane scrollFuncionarios; // Containêr da tabela
+	private DefaultTableModel model;
+	private JTable tabelaFuncionarios; 
+	private JScrollPane scrollFuncionarios; 
 	String[] colunas = { "CÓDIGO", "NOME DO FUNCIONÁRIO", "CARGO" };
 
 	public FuncionarioListaFrame(JFrame pai) {
@@ -41,7 +41,7 @@ public class FuncionarioListaFrame {
 
 	private void criarTela(JFrame pai) {
 		JDialog telaFuncionarioLista = new JDialog(pai, "Lista de Funcionários", true);
-		telaFuncionarioLista.setSize(700, 500);
+		telaFuncionarioLista.setSize(715, 500);
 		telaFuncionarioLista.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		telaFuncionarioLista.setLayout(null);
 		telaFuncionarioLista.setLocationRelativeTo(null);
@@ -54,8 +54,7 @@ public class FuncionarioListaFrame {
 		labelTitulo.setFont(new Font("Arial", Font.BOLD, 32));
 		labelTitulo.setForeground(Color.red);
 
-		// Criar a tabela
-
+		
 		model = new DefaultTableModel(colunas, 10);
 		tabelaFuncionarios = new JTable(model);
 

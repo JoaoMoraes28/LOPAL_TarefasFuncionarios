@@ -89,23 +89,31 @@ public class FuncionarioFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcionario f = new Funcionario(txtNome.getText());
-				f.setMatricula(txtMatricula.getText());
-				f.setCargo(txtCargo.getText());
-				f.setSetor(txtSetor.getText());
-				double salario = Double.parseDouble(txtSalario.getText());
-				f.setSalario(salario);
 
-				FuncionarioDAO dao = new FuncionarioDAO(f);
-				boolean sucesso = dao.gravar();
+				try {
 
-				if (sucesso) {
-					JOptionPane.showMessageDialog(telaFuncionario, "Funcionario gravado com sucesso");
-					limparFormulario();
+					f.setMatricula(txtMatricula.getText());
+					f.setCargo(txtCargo.getText());
+					f.setSetor(txtSetor.getText());
+					double salario = Double.parseDouble(txtSalario.getText());
+					f.setSalario(salario);
 
-				} else {
-					JOptionPane.showMessageDialog(telaFuncionario,
-							"Ocorreu um erro na gravação.\ntTente novamente\nSe o problema persistir, entre em contato com o suporte");
+					FuncionarioDAO dao = new FuncionarioDAO(f);
+					boolean sucesso = dao.gravar();
+
+					if (sucesso) {
+						JOptionPane.showMessageDialog(telaFuncionario, "Funcionario gravado com sucesso");
+						limparFormulario();
+
+					} else {
+						JOptionPane.showMessageDialog(telaFuncionario,
+								"Ocorreu um erro na gravação.\nTente novamente\nSe o problema persistir, entre em contato com o suporte");
+					}
+
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(telaFuncionario, "Dados incorretos.\nTente novamente.");
 				}
+
 			}
 		});
 

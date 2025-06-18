@@ -74,8 +74,9 @@ public class TarefaFrame {
 		id.setBounds(10, 10, 400, 30);
 
 		txtId = new JTextField();
-		txtId.setEditable(false);
+		txtId.setEnabled(false);
 		txtId.setText(Utils.gerarUUID8());
+		txtId.setForeground(Color.lightGray);
 		txtId.setBounds(10, 40, 400, 40);
 
 		nome = new JLabel();
@@ -97,7 +98,7 @@ public class TarefaFrame {
 		responsavel.setBounds(10, 250, 190, 30);
 
 		txtResponsavel = new JTextField();
-		txtResponsavel.setEditable(false);
+		txtResponsavel.setEnabled(false);
 		txtResponsavel.setBounds(10, 280, 300, 40);
 
 		dataInicio = new JLabel();
@@ -112,7 +113,7 @@ public class TarefaFrame {
 		status.setBounds(10, 410, 120, 30);
 
 		txtStatus = new JTextField();
-		txtStatus.setEditable(false);
+		txtStatus.setEnabled(false);
 		txtStatus.setBounds(10, 440, 130, 40);
 
 		prazo = new JLabel();
@@ -127,7 +128,7 @@ public class TarefaFrame {
 		dataEntrega.setBounds(10, 570, 120, 30);
 
 		txtDataEntrega = new JTextField();
-		txtDataEntrega.setEditable(false);
+		txtDataEntrega.setEnabled(false);
 		txtDataEntrega.setBounds(10, 600, 200, 40);
 
 		btnSalvar = new JButton();
@@ -159,10 +160,12 @@ public class TarefaFrame {
 		List<Funcionario> funcionarios = listaFuncionarios.getFuncionarios();
 		botaoOpcoes = new JRadioButton[funcionarios.size()];
 
+		// Botões para selecionar o Responsável da Tarefa
 		int i = 0;
 		for (Funcionario funcionario : funcionarios) {
 			botaoOpcoes[i] = new JRadioButton(funcionario.getNome());
 			botaoOpcoes[i].setBounds(240, 250, 200, 30);
+			botaoOpcoes[i].setBackground(Color.LIGHT_GRAY);
 			grupo.add(botaoOpcoes[i]);
 			painelEscolha.add(botaoOpcoes[i]);
 			i++;
@@ -177,6 +180,7 @@ public class TarefaFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				// Colocando os dados da tarefa
 				try {
 
 					String id = txtId.getText();
@@ -217,7 +221,8 @@ public class TarefaFrame {
 					}
 
 				} catch (Exception e2) {
-					System.out.println("error");
+					JOptionPane.showMessageDialog(telaTarefa,
+							"Ocorreu um erro na gravação.\nTente novamente\nSe o problema persistir, entre em contato com o suporte");
 				}
 
 			}
@@ -237,6 +242,7 @@ public class TarefaFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				// Verificação de qual funcionário foi selecoinado
 				try {
 					int i = 0;
 					while (botaoOpcoes[i].isSelected() == false) {
@@ -248,7 +254,8 @@ public class TarefaFrame {
 					btnEscolherResponsavel.setVisible(false);
 
 				} catch (Exception e2) {
-					System.out.println("ERROR");
+					JOptionPane.showMessageDialog(telaTarefa,
+							"Ocorreu um erro na seleção\nTente Novamente");
 				}
 
 			}

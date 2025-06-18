@@ -31,11 +31,11 @@ public class MenuPrincipalFrame {
 
 		btnFuncionario = new JButton();
 		btnFuncionario.setText("FUNCIONÁRIOS");
-		btnFuncionario.setBounds(20, 30, 150, 50);
+		btnFuncionario.setBounds(10, 30, 150, 50);
 
 		btnTarefas = new JButton();
 		btnTarefas.setText("TAREFAS");
-		btnTarefas.setBounds(200, 30, 150, 50);
+		btnTarefas.setBounds(190, 30, 150, 50);
 
 		btnFuncionario.addActionListener(new ActionListener() {
 
